@@ -10,6 +10,10 @@ const login = async (username: string, password: string) => {
       body: JSON.stringify({ username, password }),
     });
 
+    if(response.status===400){
+      alert("Please check your username and password");
+    }
+
     if (!response.ok) {
       throw new Error('Login failed');
     }
@@ -31,13 +35,17 @@ const register = async (username: string, password: string) => {
       },
       body: JSON.stringify({ username, password }),
     });
+    if(response.status===400){
+        alert("User Name already in use");
+    }
 
     if (!response.ok) {
       throw new Error('Registration failed');
+
     }
   } catch (error) {
     console.error('Registration error:');
-    throw error; // Propagate the error for handling in the UI
+    throw error;
   }
 };
 

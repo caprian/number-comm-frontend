@@ -14,6 +14,7 @@ const Auth: React.FC = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(
 		!!localStorage.getItem("token")
 	);
+	const [registered, setRegistered] = useState("");
 	const handleLogout = () => {
 		if (isAuthenticated) {
 			localStorage.removeItem("token");
@@ -27,9 +28,12 @@ const Auth: React.FC = () => {
 			if (isLogin) {
 				await authService.login(username, password);
 				setIsAuthenticated(true);
+				setRegistered("");
 				//navigate("/calc");
 			} else {
 				await authService.register(username, password);
+				//setIsAuthenticated(true);
+				setRegistered("Success, Please Login to use the services.");
 			}
 		} catch (error) {
 			console.error(error);
@@ -74,6 +78,7 @@ const Auth: React.FC = () => {
 							{isLogin ? "Switch to Register" : "Switch to Login"}
 						</button>
 					</div>
+					{registered}
 				</div>
 			)}
 			<div>
