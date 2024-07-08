@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+//import Auth from "./components/Auth";
+//import Calculation from "./components/Calculation";
+import "./App.css";
+import Calculation from "./components/Calculation";
+import Auth from "./components/Auth";
+const App: React.FC = () => {
+	const isAuthenticated = !!localStorage.getItem("token");
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/auth" element={<Auth />} />
+				<Route
+					path="/calc"
+					//element={<Calculation />}
+					element={isAuthenticated ? <Calculation /> : <Navigate to="/auth" />}
+				/>
+				<Route path="/" element={<Navigate to="/auth" />} />
+			</Routes>
+		</div>
+	);
+};
 
 export default App;
