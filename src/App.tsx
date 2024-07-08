@@ -11,13 +11,13 @@ const App: React.FC = () => {
 	return (
 		<div className="App">
 			<Routes>
-				<Route path="/auth" element={<Auth />} />
-				<Route
+				<Route path="/" element={<Auth />} />
+				{/* <Route
 					path="/calc"
 					//element={<Calculation />}
 					element={isAuthenticated ? <Calculation /> : <Navigate to="/auth" />}
 				/>
-				<Route path="/" element={<Navigate to="/auth" />} />
+				<Route path="/" element={<Navigate to="/auth" />} /> */}
 			</Routes>
 		</div>
 	);
