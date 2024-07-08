@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5001';
+const API_URL = 'https://numbercomm.onrender.com';
 
 const getCalculations = async () => {
   const response = await fetch(`${API_URL}/calc`, {

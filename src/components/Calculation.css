@@ -1,0 +1,44 @@
+.tree {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .tree ul {
+    list-style-type: none;
+    padding-left: 20px;
+  }
+  
+  .tree li {
+    margin-bottom: 5px;
+  }
+
+  .calculations-container{
+    border: 1px solid #000000;
+    display: flex;
+    margin: 8px;
+  }
+
+  .calculations-tree{
+    display: flex;
+    justify-content: center;
+    border: 1px solid blueviolet;
+    flex-direction: column;
+  }
+  .user-name-element{
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .calculation-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin: 4px;
+  }
+
+  .calculation-node{
+    display: list-item;
+    margin-bottom: 8px;
+    margin-right: 4px;
+  }

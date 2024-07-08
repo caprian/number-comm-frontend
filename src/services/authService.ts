@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5001';
+const API_URL = 'https://numbercomm.onrender.com';
 
 const login = async (username: string, password: string) => {
   try {

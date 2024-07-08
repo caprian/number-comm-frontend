@@ -1,0 +1,55 @@
+.home-container{
+    display: flex;
+    border: 1px solid #000000;
+    flex-direction: column;
+}
+.authenticatior-container{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    border: 1px solid #000000;
+    padding: 12px;
+}
+.header-element{
+    display: flex;
+    justify-content: center;
+    max-width: 100px;
+    align-self: center;
+}
+.auth-form{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.username-input-box{
+    display: flex;
+    max-width: 350px;
+    width: 300px;
+    align-self: center;
+    height: 24px;
+}
+.password-input-box{
+    display: flex;
+    max-width: 350px;
+    width: 300px;
+    align-self: center;
+    height: 24px;
+}
+.form-submit-button{
+    display: flex;
+    align-self: center;
+    width: 70px;
+    padding: 5px;
+    margin: 5px;
+    height: 24px;
+}
+
+.switch-box-container{
+    display: flex;
+    align-self: center;
+    margin: 8px;
+}
+.switch-box{
+    display: flex;
+    margin-left: 8px;
+}

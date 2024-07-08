@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import calcService from "../services/calcService";
+import "./Calculation.css";
+import CalculationNode from "./CalculationNode";
 
 interface Calculation {
 	_id: string;
@@ -15,11 +17,7 @@ interface Calculation {
 	};
 }
 
-interface Props {
-	isLoggedIn: boolean;
-}
-
-const CalculationComponent: React.FC = (isLoggedIn) => {
+const CalculationComponent = () => {
 	const [calculations, setCalculations] = useState<Calculation[]>([]);
 	const [initialValue, setInitialValue] = useState<number | null>(null);
 	const [currentCalculation, setCurrentCalculation] =
@@ -34,6 +32,7 @@ const CalculationComponent: React.FC = (isLoggedIn) => {
 			try {
 				const data = await calcService.getCalculations();
 				setCalculations(data);
+				setError("");
 			} catch (error) {
 				console.error("Error fetching calculations:", error);
 				setError(`Error fetching calculations ${error}`);
@@ -45,11 +44,12 @@ const CalculationComponent: React.FC = (isLoggedIn) => {
 
 	const handleStartInitialCalculation = async () => {
 		try {
-			if (initialValue !== null && isLoggedIn) {
+			if (initialValue !== null) {
 				await calcService.addInitialCalculation(initialValue);
 				const data = await calcService.getCalculations();
 				setCalculations(data);
 				setInitialValue(null);
+				setError("");
 			}
 		} catch (error) {
 			console.error("Error starting initial calculation:", error);
@@ -63,7 +63,6 @@ const CalculationComponent: React.FC = (isLoggedIn) => {
 				currentCalculation &&
 				operator &&
 				commentValue !== null &&
-				isLoggedIn &&
 				isAuthenticated
 			) {
 				await calcService.addComment(
@@ -76,6 +75,7 @@ const CalculationComponent: React.FC = (isLoggedIn) => {
 				setCurrentCalculation(null);
 				setOperator("+");
 				setCommentValue(0);
+				setError("");
 			}
 		} catch (error) {
 			console.error("Error adding comment:", error);
@@ -83,72 +83,40 @@ const CalculationComponent: React.FC = (isLoggedIn) => {
 		}
 	};
 
-	const renderCalculations = (calcList: Calculation[]) => {
-		return (
-			<ul>
-				{calcList.map((calc) => (
-					<li key={calc._id}>
-						<strong>{calc.userId?.username}:</strong>{" "}
-						{calc.parent === null ? (
-							calc.left
-						) : (
-							<>
-								{calc.left} {calc.operator} {calc.right} = {calc.initialResult}
-							</>
-						)}
-						{isAuthenticated && (
-							<button onClick={() => setCurrentCalculation(calc)}>
-								Add Comment
-							</button>
-						)}
-						{currentCalculation?._id === calc._id && (
-							<div>
-								<input
-									type="number"
-									value={commentValue}
-									onChange={(e) => setCommentValue(parseFloat(e.target.value))}
-									placeholder="Enter Number"
-									required
-								/>
-								<select
-									value={operator}
-									onChange={(e) => setOperator(e.target.value)}>
-									<option value="+">+</option>
-									<option value="-">-</option>
-									<option value="*">*</option>
-									<option value="/">/</option>
-								</select>
-								<button onClick={handleAddComment}>Comment</button>
-							</div>
-						)}
-						{renderCalculations(
-							calculations.filter((c) => c.parent === calc._id)
-						)}
-					</li>
-				))}
-			</ul>
-		);
-	};
-
 	return (
 		<div>
-			<h2>Calculations</h2>
+			<h2>Number Communications</h2>
 			<div style={{ color: "red" }}>{error}</div>
-
-			<form onSubmit={handleStartInitialCalculation}>
-				<input
-					type="number"
-					value={initialValue !== null ? initialValue : ""}
-					onChange={(e) => setInitialValue(parseFloat(e.target.value))}
-					placeholder="Initial Number"
-					required
-				/>
-				{isAuthenticated && (
-					<button type="submit">Add Initial Calculation</button>
-				)}
-			</form>
+			{isAuthenticated && (
+				<form onSubmit={handleStartInitialCalculation}>
+					<input
+						type="number"
+						value={initialValue !== null ? initialValue : ""}
+						onChange={(e) => setInitialValue(parseFloat(e.target.value))}
+						placeholder="Initial Number"
+						required
+					/>
+					{isAuthenticated && <button type="submit">Add Initial Number</button>}
+				</form>
+			)}
 			{calculations.length > 0 &&
-				renderCalculations(calculations.filter((c) => c.parent === null))}
+				calculations
+					.filter((c) => c.parent === null)
+					.map((calc) => (
+						<CalculationNode
+							key={calc._id}
+							calc={calc}
+							isAuthenticated={isAuthenticated}
+							currentCalculation={currentCalculation}
+							setCurrentCalculation={setCurrentCalculation}
+							commentValue={commentValue}
+							setCommentValue={setCommentValue}
+							operator={operator}
+							setOperator={setOperator}
+							handleAddComment={handleAddComment}
+							calculations={calculations}
+						/>
+					))}
 		</div>
 	);
 };
